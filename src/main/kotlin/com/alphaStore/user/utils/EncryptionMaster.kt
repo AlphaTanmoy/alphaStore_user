@@ -1,5 +1,6 @@
 package com.alphaStore.user.utils
 
+import com.alphaStore.user.contract.repo.EncryptionMasterContract
 import com.alphaStore.user.encryptionmaster.AESUtil
 import com.alphaStore.user.error.BadRequestException
 import org.springframework.stereotype.Component
@@ -7,9 +8,9 @@ import javax.crypto.SecretKey
 import javax.crypto.spec.IvParameterSpec
 
 @Component
-class EncryptionMaster {
+class EncryptionMaster : EncryptionMasterContract {
 
-    fun encrypt(
+    override fun encrypt(
         stringToEncrypt: String,
     ): String {
         try {
@@ -23,7 +24,7 @@ class EncryptionMaster {
         }
     }
 
-    fun encrypt(
+    override fun encrypt(
         stringToEncrypt: String,
         password: String,
         salt: String?
@@ -38,7 +39,7 @@ class EncryptionMaster {
         }
     }
 
-    fun decrypt(
+    override fun decrypt(
         toDecrypt: String?,
         tryOne: Boolean,
         tryTwo: Boolean,
@@ -68,7 +69,7 @@ class EncryptionMaster {
         }
     }
 
-    fun decryptWithPassword(
+    override fun decryptWithPassword(
         toDecrypt: String, password: String, salt: String?
     ): String {
         return try {
