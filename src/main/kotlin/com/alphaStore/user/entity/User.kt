@@ -4,7 +4,6 @@ import com.alphaStore.user.entity.superentity.SuperEntityWithIdCreatedLastModifi
 import com.alphaStore.user.enums.UserType
 import com.fasterxml.jackson.annotation.JsonFilter
 import com.fasterxml.jackson.annotation.JsonIgnore
-import com.sun.tools.javac.code.Attribute.Class
 import jakarta.persistence.*
 import jakarta.validation.constraints.Pattern
 import java.time.ZonedDateTime
