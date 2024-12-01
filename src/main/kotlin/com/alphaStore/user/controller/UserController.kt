@@ -51,7 +51,7 @@ class UserController(
         )
     }
 
-    @GetMapping("/getProfile")
+    @PostMapping("/getProfile")
     fun getProfile(
         @Valid
         @NotBlank(message = "Please provide Authorization token")
@@ -121,7 +121,7 @@ class UserController(
             userType = UserType.USER,
             password = passwordEncoderMaster.encode(newUserRequest.userPassword),
             country = findCountryByKnownName.knownName,
-            address = newUserRequest.userCountry
+            address = newUserRequest.userAddress,
         )
 
         return userService.createUser(
