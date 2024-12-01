@@ -3,10 +3,7 @@ package com.alphaStore.user.controller
 import com.alphaStore.user.entity.User
 import com.alphaStore.user.enums.UserType
 import com.alphaStore.user.error.BadRequestException
-import com.alphaStore.user.model.GetProfile
-import com.alphaStore.user.model.PaginationResponse
-import com.alphaStore.user.model.ProductResponse
-import com.alphaStore.user.model.UserCreateRequest
+import com.alphaStore.user.model.*
 import com.alphaStore.user.service.CountryService
 import com.alphaStore.user.service.JWTTokenService
 import com.alphaStore.user.service.UserService
@@ -28,7 +25,33 @@ class UserController(
     private var jwtUtilMaster: JwtUtilMaster
 ) {
 
-    @PostMapping("/getProfile")
+    @PostMapping("/login/email")
+    fun loginWithEmailId(
+        @RequestBody loginWithEmailRequest: LoginWithEmailRequest
+    ): TokenCreationResponse {
+        if (loginWithEmailRequest.emailId.isEmpty()) {
+            throw BadRequestException("Please provide email id")
+        }
+        if (!loginWithEmailRequest.emailId.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$".toRegex())) {
+            throw BadRequestException("Email not valid")
+        }
+        if (loginWithEmailRequest.password.isEmpty()) {
+            throw BadRequestException("Please provide password")
+        }
+
+        val user = userService.loginUsingEmailId(
+            loginWithEmailRequest.emailId,
+            loginWithEmailRequest.password,
+            loginWithEmailRequest
+        )
+
+        return jwtTokenService.generateToken(
+            user = user,
+            isForLogin = true
+        )
+    }
+
+    @GetMapping("/getProfile")
     fun getProfile(
         @Valid
         @NotBlank(message = "Please provide Authorization token")
