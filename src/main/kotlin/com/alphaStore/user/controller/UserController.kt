@@ -68,7 +68,7 @@ class UserController(
         }
     }
 
-    @GetMapping("/view/{merchantId}")
+    @GetMapping("/viewProduct")
     fun viewProduct() : PaginationResponse<ProductResponse> {
         val productResponse = userService.viewProduct()
         return PaginationResponse(productResponse.data)
