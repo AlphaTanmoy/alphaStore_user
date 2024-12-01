@@ -1,6 +1,6 @@
 package com.alphaStore.user.utils.password
 
-import com.alphaStore.merchant.utils.KeywordsAndConstants.PASSWORD_CONFIG_BCRYPT_ROUND
+import com.alphaStore.user.utils.KeywordsAndConstants.PASSWORD_CONFIG_BCRYPT_ROUND
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Component
 

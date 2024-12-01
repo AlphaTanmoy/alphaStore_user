@@ -61,6 +61,18 @@ data class User (
     )
     var wishList: UserWishList,
 
+    var complainRaised: Boolean = false,
+
+    var complainId: String = "",
+
+    var feedbackGiven: Boolean = false,
+
+    var feedbackId: String = "",
+
+    var imageAttachment: String = "",
+
+    var videoAttachment: String = "",
+
     ): SuperEntityWithIdCreatedLastModifiedDataStatus()
 
 @JsonFilter("UserFilter")

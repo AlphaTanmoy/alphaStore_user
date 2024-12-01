@@ -1,6 +1,6 @@
 package com.alphaStore.user.utils.emailTemplates
 
-import com.alphaStore.merchant.contract.TemplateCreatorMaster
+import com.alphaStore.user.contract.TemplateCreatorMaster
 
 class PasswordResetDueToMultipleLoginFailsTemplateCreator(
     private val newPassword:String

@@ -24,6 +24,15 @@ object DateUtil {
         }
     }
 
+    fun getStringFromZonedDateTimeUsingIsoDateFormat(zonedDateTime: ZonedDateTime?): String {
+        var zonedDateTimeToConvert = ZonedDateTime.now()
+        zonedDateTime?.let {
+            zonedDateTimeToConvert = it
+        }
+        val dateTimeFormatter = DateTimeFormatter.ISO_DATE_TIME
+        return zonedDateTimeToConvert.format(dateTimeFormatter)
+    }
+
     private fun sanitizeDateTimeString(stringToProcess: String, removeT: Boolean = false): String {
         var result = if (stringToProcess.contains(" ")) {
             stringToProcess.replace(" ", "+")
@@ -38,5 +47,9 @@ object DateUtil {
             }
         }
         return result
+    }
+
+    fun getDateFromZonedDateTime(zonedDateTime: ZonedDateTime): Date {
+        return Date.from(zonedDateTime.toInstant())
     }
 }

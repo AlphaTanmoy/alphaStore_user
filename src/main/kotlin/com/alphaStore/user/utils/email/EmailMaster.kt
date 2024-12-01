@@ -1,16 +1,15 @@
 package com.alphaStore.user.utils.email
 
-import com.alphaStore.merchant.contract.TemplateCreatorMaster
-import com.alphaStore.merchant.enums.SendEmailFrom
-import com.alphaStore.merchant.error.GenericException
-import com.alphaStore.merchant.utils.KeywordsAndConstants
-import com.alphaStore.merchant.utils.emailTemplates.*
+import com.alphaStore.user.contract.TemplateCreatorMaster
+import com.alphaStore.user.enums.SendEmailFrom
+import com.alphaStore.user.error.GenericException
+import com.alphaStore.user.utils.KeywordsAndConstants
+import com.alphaStore.user.utils.emailTemplates.*
 import org.springframework.mail.SimpleMailMessage
 import org.springframework.mail.javamail.JavaMailSenderImpl
 import org.springframework.mail.javamail.MimeMessageHelper
 import org.springframework.stereotype.Component
 import org.thymeleaf.TemplateEngine
-import java.awt.Color
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.util.*

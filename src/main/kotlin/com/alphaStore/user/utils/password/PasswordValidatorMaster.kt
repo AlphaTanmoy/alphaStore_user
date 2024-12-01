@@ -1,11 +1,11 @@
 package com.alphaStore.user.utils.password
 
-import com.alphaStore.merchant.error.BadRequestException
-import com.alphaStore.merchant.utils.KeywordsAndConstants.PASSWORD_MIN_LENGTH
-import com.alphaStore.merchant.utils.KeywordsAndConstants.PASSWORD_MUST_HAVE_CAPITAL_LETTER
-import com.alphaStore.merchant.utils.KeywordsAndConstants.PASSWORD_MUST_HAVE_NUMBER
-import com.alphaStore.merchant.utils.KeywordsAndConstants.PASSWORD_MUST_HAVE_SMALL_LETTER
-import com.alphaStore.merchant.utils.KeywordsAndConstants.PASSWORD_MUST_HAVE_SPECIAL_CHAR
+import com.alphaStore.user.error.BadRequestException
+import com.alphaStore.user.utils.KeywordsAndConstants.PASSWORD_MIN_LENGTH
+import com.alphaStore.user.utils.KeywordsAndConstants.PASSWORD_MUST_HAVE_CAPITAL_LETTER
+import com.alphaStore.user.utils.KeywordsAndConstants.PASSWORD_MUST_HAVE_NUMBER
+import com.alphaStore.user.utils.KeywordsAndConstants.PASSWORD_MUST_HAVE_SMALL_LETTER
+import com.alphaStore.user.utils.KeywordsAndConstants.PASSWORD_MUST_HAVE_SPECIAL_CHAR
 import org.springframework.stereotype.Component
 
 @Component

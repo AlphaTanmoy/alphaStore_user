@@ -1,7 +1,7 @@
 package com.alphaStore.user.utils.emailTemplates
 
-import com.alphaStore.merchant.contract.TemplateCreatorMaster
-import com.alphaStore.merchant.utils.KeywordsAndConstants.FRONT_END_URL
+import com.alphaStore.user.contract.TemplateCreatorMaster
+import com.alphaStore.user.utils.KeywordsAndConstants.FRONT_END_URL
 
 class NewMerchantCreatedTemplateCreator(
     private val name: String,

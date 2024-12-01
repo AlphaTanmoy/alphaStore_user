@@ -1,29 +1,23 @@
 package com.alphaStore.user.utils
 
-import com.alphaStore.merchant.entity.Merchant
-import com.alphaStore.merchant.enums.UserType
-import com.alphaStore.merchant.error.BadRequestException
-import com.alphaStore.merchant.error.BadRequestExceptionThrowable
-import com.alphaStore.merchant.error.UnAuthorizedException
-import com.alphaStore.merchant.error.UnAuthorizedExceptionThrowable
-import com.alphaStore.merchant.model.TokenCreationResponse
-import com.alphaStore.merchant.utils.KeywordsAndConstants.GENERIC_JWT_CHOICE_ONE
-import com.alphaStore.merchant.utils.KeywordsAndConstants.GENERIC_JWT_CHOICE_THREE
-import com.alphaStore.merchant.utils.KeywordsAndConstants.GENERIC_JWT_CHOICE_TWO
-import com.alphaStore.merchant.utils.KeywordsAndConstants.JWT_TIMEOUT_MINUTES_NORMAL
-import com.alphaStore.merchant.utils.KeywordsAndConstants.NO_AUTH_APIS
-import com.alphaStore.merchant.utils.KeywordsAndConstants.REFRESH_TIMEOUT_MINUTES_LONG
-import com.alphaStore.merchant.utils.KeywordsAndConstants.REFRESH_TOKEN_SUB
-import com.alphaStore.merchant.utils.KeywordsAndConstants.TOKEN_EXPIRED
-import com.alphaStore.merchant.utils.KeywordsAndConstants.TOKEN_EXPIRED_DESCRIPTION
-import com.alphaStore.merchant.utils.KeywordsAndConstants.TOKEN_NOT_VALID
-import com.alphaStore.merchant.utils.KeywordsAndConstants.TOKEN_NOT_VALID_DESCRIPTION
-import com.alphaStore.merchant.utils.KeywordsAndConstants.TOKEN_PREFIX
-import com.alphaStore.merchant.utils.KeywordsAndConstants.TOKEN_TIRE
+import com.alphaStore.user.contract.aggregator.UserRepoAggregator
+import com.alphaStore.user.entity.User
+import com.alphaStore.user.enums.UserType
+import com.alphaStore.user.error.BadRequestExceptionThrowable
+import com.alphaStore.user.error.UnAuthorizedException
+import com.alphaStore.user.error.UnAuthorizedExceptionThrowable
+import com.alphaStore.user.model.TokenCreationResponse
+import com.alphaStore.user.utils.KeywordsAndConstants.JWT_TIMEOUT_MINUTES_NORMAL
+import com.alphaStore.user.utils.KeywordsAndConstants.NO_AUTH_APIS
+import com.alphaStore.user.utils.KeywordsAndConstants.REFRESH_TIMEOUT_MINUTES_LONG
+import com.alphaStore.user.utils.KeywordsAndConstants.REFRESH_TOKEN_SUB
+import com.alphaStore.user.utils.KeywordsAndConstants.TOKEN_EXPIRED
+import com.alphaStore.user.utils.KeywordsAndConstants.TOKEN_TIRE
 import com.alphaStore.user.error.BadRequestException
 import com.alphaStore.user.utils.KeywordsAndConstants.GENERIC_JWT_CHOICE_ONE
 import com.alphaStore.user.utils.KeywordsAndConstants.GENERIC_JWT_CHOICE_THREE
 import com.alphaStore.user.utils.KeywordsAndConstants.GENERIC_JWT_CHOICE_TWO
+import com.alphaStore.user.utils.KeywordsAndConstants.TOKEN_EXPIRED_DESCRIPTION
 import com.alphaStore.user.utils.KeywordsAndConstants.TOKEN_NOT_VALID
 import com.alphaStore.user.utils.KeywordsAndConstants.TOKEN_NOT_VALID_DESCRIPTION
 import com.alphaStore.user.utils.KeywordsAndConstants.TOKEN_PREFIX
@@ -41,7 +35,7 @@ import java.util.*
 
 @Component
 class JwtUtilMaster (
-    private val merchantRepoAggregator: MerchantRepoAggregator,
+    private val userRepoAggregator: UserRepoAggregator,
     private val encryptionMaster: EncryptionMaster,
     private val encodingUtil: EncodingUtil
 ){
@@ -222,7 +216,7 @@ class JwtUtilMaster (
         }
     }
 
-    fun getMerchantId(token: String): Optional<String> {
+    fun getUserId(token: String): Optional<String> {
         val bodyOptional = getBody(
             token.replace(KeywordsAndConstants.TOKEN_PREFIX, ""),
         )
@@ -234,13 +228,13 @@ class JwtUtilMaster (
         }
     }
 
-    fun getUserFromToken(token: String, throwErrorIfNotFound: Boolean = true): Optional<Merchant> {
+    fun getUserFromToken(token: String, throwErrorIfNotFound: Boolean = true): Optional<User> {
         val bodyOptional = getBody(
             token.replace(KeywordsAndConstants.TOKEN_PREFIX, ""),
         )
         return if (bodyOptional.isPresent) {
             val id = bodyOptional.get()["id"]
-            val toReturn = merchantRepoAggregator.findByIdAndDataStatus(
+            val toReturn = userRepoAggregator.findByIdAndDataStatus(
                 id = id.toString(),
             )
             if (throwErrorIfNotFound && toReturn.isEmpty()) {
