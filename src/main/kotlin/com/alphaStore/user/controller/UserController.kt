@@ -1,9 +1,12 @@
 package com.alphaStore.user.controller
 
+import com.alphaStore.user.entity.User
+import com.alphaStore.user.enums.UserType
 import com.alphaStore.user.error.BadRequestException
 import com.alphaStore.user.model.GetProfile
 import com.alphaStore.user.model.PaginationResponse
 import com.alphaStore.user.model.ProductResponse
+import com.alphaStore.user.model.UserCreateRequest
 import com.alphaStore.user.service.CountryService
 import com.alphaStore.user.service.JWTTokenService
 import com.alphaStore.user.service.UserService
@@ -12,10 +15,11 @@ import com.alphaStore.user.utils.KeywordsAndConstants.HEADER_AUTHORIZATION
 import com.alphaStore.user.utils.password.PasswordEncoderMaster
 import jakarta.validation.Valid
 import jakarta.validation.constraints.NotBlank
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestHeader
+import org.springframework.web.bind.annotation.*
 
+
+@RestController
+@RequestMapping("/user")
 class UserController(
     private val userService: UserService,
     private val countryService: CountryService,
@@ -47,4 +51,60 @@ class UserController(
         return PaginationResponse(productResponse.data)
     }
 
+    @PostMapping("/create")
+    fun createMerchant(
+        @RequestBody newUserRequest: UserCreateRequest
+    ): User {
+
+        if (newUserRequest.userName.isEmpty()) {
+            throw BadRequestException("Please provide valid name")
+        }
+
+        if (newUserRequest.userEmail.isEmpty()) {
+            throw BadRequestException("Please provide email id")
+        }
+
+        if (!newUserRequest.userEmail.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$".toRegex())) {
+            throw BadRequestException("Email not valid")
+        }
+
+        if (newUserRequest.userAddress.isEmpty()){
+            throw BadRequestException("Please provide address")
+        }
+
+        if (newUserRequest.userAddress.isEmpty()) {
+            throw BadRequestException("Please provide an address")
+        }
+
+        if (newUserRequest.userAddress.length < 7 || newUserRequest.userAddress.isBlank()) {
+            throw BadRequestException("Address must be at least 10 characters long and not blank")
+        }
+
+        if (!Regex("\\d{10,15}").matches(newUserRequest.userPhone)) {
+            throw BadRequestException(errorMessage = "Merchant phone number must be between 10 and 15 digits.")
+        }
+
+        if (!newUserRequest.userPassword.matches("^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@\$!%*?&])[A-Za-z\\d@\$!%*?&]{8,}$".toRegex())) {
+            throw BadRequestException("Password must be at least 8 characters long and include uppercase, lowercase, a number, and a special character")
+        }
+
+        val findCountryByKnownName = countryService.getCountryByKnownName(newUserRequest.userCountry)
+            ?: throw BadRequestException(errorMessage = "Country Name Not exists.")
+
+        val userToReturn = User(
+            name = newUserRequest.userName,
+            phone = newUserRequest.userPhone,
+            emailId = newUserRequest.userEmail,
+            userType = UserType.USER,
+            password = passwordEncoderMaster.encode(newUserRequest.userPassword),
+            country = findCountryByKnownName.knownName,
+            address = newUserRequest.userCountry
+        )
+
+        return userService.createUser(
+            user = userToReturn
+        )
+    }
+    
+    
 }

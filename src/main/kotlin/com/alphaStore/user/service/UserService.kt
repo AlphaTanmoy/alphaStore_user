@@ -1,9 +1,13 @@
 package com.alphaStore.user.service
 
+import com.alphaStore.user.contract.aggregator.UserCartAggregator
 import com.alphaStore.user.contract.aggregator.UserRepoAggregator
+import com.alphaStore.user.contract.aggregator.UserWishListAggregator
 import com.alphaStore.user.contract.repo.EncodingUtilContract
 import com.alphaStore.user.contract.repo.EncryptionMasterContract
 import com.alphaStore.user.entity.User
+import com.alphaStore.user.entity.UserCart
+import com.alphaStore.user.entity.UserWishList
 import com.alphaStore.user.error.BadRequestException
 import com.alphaStore.user.error.UnAuthorizedException
 import com.alphaStore.user.feignClient.ProductClient
@@ -20,6 +24,8 @@ import org.springframework.stereotype.Component
 @Component
 class UserService (
     private val userRepoAggregator: UserRepoAggregator,
+    private val userCartAggregator: UserCartAggregator,
+    private val userWishListAggregator: UserWishListAggregator,
     private val encodingUtilContract: EncodingUtilContract,
     private val encryptionMaster: EncryptionMasterContract,
     private val dateUtilContract: DateUtil,
@@ -31,14 +37,14 @@ class UserService (
         if (!emailId.matches(Regex(EMAIL_REGEX))) {
             throw BadRequestException("Please enter a valid email id")
         }
-        val merchant =
+        val user =
             userRepoAggregator.findByEmailIdAndDataStatus(
                 emailId,
             )
-        if (merchant.isNotEmpty()) {
-            val findMerchant = merchant[0]
-            if (passwordEncoderMaster.matches(password, findMerchant.password))
-                return findMerchant
+        if (user.isNotEmpty()) {
+            val findUser = user[0]
+            if (passwordEncoderMaster.matches(password, findUser.password))
+                return findUser
         }
         throw UnAuthorizedException()
     }
@@ -64,6 +70,25 @@ class UserService (
         } catch (e: FeignException) {
             throw RuntimeException("Error fetching products. ${e.message}")
         }
+    }
+
+    fun createUser(user: User): User {
+        val savedUserId = user.id
+
+        val cart = UserCart()
+        val wishList = UserWishList()
+
+        cart.userId = savedUserId
+        wishList.userId = savedUserId
+
+        userCartAggregator.save(cart)
+        userWishListAggregator.save(wishList)
+
+        user.userCartId = cart.id
+        user.wishListId = wishList.id
+
+        val userToSave = userRepoAggregator.save(user)
+        return userToSave
     }
 
     fun convertUserToGetProfile(user: User): GetProfile {

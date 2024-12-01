@@ -47,21 +47,9 @@ data class User (
     @Column(nullable = false)
     var address: String = "",
 
-    @OneToOne(targetEntity = UserCart::class, fetch = FetchType.EAGER)
-    @JoinTable(
-        name = "user_cart",
-        joinColumns = [JoinColumn(name= "user_id")],
-        inverseJoinColumns = [JoinColumn(name = "user_cart_id")],
-    )
-    var userCart: UserCart = UserCart(),
+    var userCartId: String = "",
 
-    @OneToOne(targetEntity = UserWishList::class, fetch = FetchType.EAGER)
-    @JoinTable(
-        name = "user_wish_list",
-        joinColumns = [JoinColumn(name= "user_id")],
-        inverseJoinColumns = [JoinColumn(name = "user_wishlist_id")],
-    )
-    var wishList: UserWishList = UserWishList(),
+    var wishListId: String = "",
 
     var complainRaised: Boolean = false,
 
@@ -70,10 +58,6 @@ data class User (
     var feedbackGiven: Boolean = false,
 
     var feedbackId: String = "",
-
-    var imageAttachment: String = "",
-
-    var videoAttachment: String = "",
 
     ): SuperEntityWithIdCreatedLastModifiedDataStatus()
 

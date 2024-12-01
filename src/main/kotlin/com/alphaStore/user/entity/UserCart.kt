@@ -6,6 +6,7 @@ import jakarta.persistence.*
 
 @Entity(name = "user_cart")
 data class UserCart(
+    var userId: String = "",
     @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
     @JoinTable(
         name = "product_info",
