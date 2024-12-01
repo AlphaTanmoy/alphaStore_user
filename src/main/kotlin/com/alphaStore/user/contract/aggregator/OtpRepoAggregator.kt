@@ -19,31 +19,31 @@ class OtpRepoAggregator(
     }
 
 
-    fun findByMerchantIdAndOtpPurposeAndOtpAndDataStatus(
-        merchantId: String,
+    fun findByUserIdAndOtpPurposeAndOtpAndDataStatus(
+        userId: String,
         otpRequiredFor: OtpRequiredFor,
         otp: String,
         dataStatus: DataStatus = DataStatus.ACTIVE,
     ): List<Otp> {
-        return otpRepo.findByMerchantIdAndOtpRequiredForAndOtpAndDataStatus(
-            merchantId,
+        return otpRepo.findByUserIdAndOtpRequiredForAndOtpAndDataStatus(
+            userId,
             otpRequiredFor,
             otp,
             dataStatus
         )
     }
 
-    fun findByMerchantIdAndDataStatus(
-        merchantId: String,
+    fun findByUserIdAndDataStatus(
+        userId: String,
         dataStatus: DataStatus = DataStatus.ACTIVE,
     ): List<Otp> {
-        return otpRepo.findByMerchantIdAndDataStatus(merchantId, dataStatus)
+        return otpRepo.findByIdAndDataStatus(userId, dataStatus)
     }
 
     fun findLastOtpsSentToUser(
-        merchantId: String,
+        userId: String,
         limit: Int,
     ): List<Otp> {
-        return otpRepo.findLastOtpsSentToUser(merchantId, limit)
+        return otpRepo.findLastOtpsSentToUser(userId, limit)
     }
 }

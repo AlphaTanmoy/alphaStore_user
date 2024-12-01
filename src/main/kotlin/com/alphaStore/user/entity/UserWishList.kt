@@ -1,11 +1,15 @@
 package com.alphaStore.user.entity
 
 import com.alphaStore.user.entity.superentity.SuperEntityWithIdCreatedLastModifiedDataStatus
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
+import jakarta.persistence.*
 
 @Entity(name = "user_wish_list")
 data class UserWishList (
-    @Column
-    var productList: List<ProductInfo> = ArrayList()
+    @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "product_info",
+        joinColumns = [JoinColumn(name = "wish_list_id")],
+        inverseJoinColumns = [JoinColumn(name = "product_id")]
+    )
+    var productInfo: List<ProductInfo> = ArrayList()
 ): SuperEntityWithIdCreatedLastModifiedDataStatus()

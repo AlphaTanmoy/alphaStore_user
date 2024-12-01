@@ -1,5 +1,6 @@
 package com.alphaStore.user.service
 
+import com.alphaStore.user.entity.User
 import com.alphaStore.user.model.TokenCreationResponse
 import com.alphaStore.user.utils.JwtUtilMaster
 import org.springframework.stereotype.Component

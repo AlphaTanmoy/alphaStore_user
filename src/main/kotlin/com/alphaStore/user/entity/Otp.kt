@@ -13,8 +13,8 @@ import java.time.ZonedDateTime
 data class Otp(
     var otp: String = "",
     var expiry: ZonedDateTime = ZonedDateTime.now(),
-    var userType: UserType = UserType.MERCHANT,
-    var merchantId: String = "",
+    var userType: UserType = UserType.USER,
+    var userId: String = "",
     @Enumerated(EnumType.STRING)
     var otpRequiredFor: OtpRequiredFor = OtpRequiredFor.LOGIN,
     var numberOfTimesOtpVerificationBeenTried: Int = 1,

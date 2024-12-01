@@ -10,6 +10,8 @@ import org.springframework.data.jpa.repository.JpaRepository
 @Primary
 interface UserRepo : JpaRepository<User, String> {
 
+    fun findByEmailIdAndDataStatus(emailId: String, dataStatus: DataStatus = DataStatus.ACTIVE): List<User>
+
     fun findByIdAndDataStatus(id: String, dataStatus: DataStatus = DataStatus.ACTIVE): List<User>
 
 }

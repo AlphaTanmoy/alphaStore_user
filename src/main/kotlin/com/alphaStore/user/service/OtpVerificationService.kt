@@ -1,7 +1,7 @@
 package com.alphaStore.user.service
 
-import com.alphaStore.user.contract.aggregator.userRepoAggregator
-import com.alphaStore.user.entity.user
+import com.alphaStore.user.contract.aggregator.UserRepoAggregator
+import com.alphaStore.user.entity.User
 import com.alphaStore.user.enums.OtpDeliveryChannel
 import com.alphaStore.user.enums.OtpRequiredFor
 import com.alphaStore.user.enums.OtpVerificationResult
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component
 @Component
 class OtpVerificationService (
     private val otpMaster: OTPMaster,
-    private val userRepoAggregator: userRepoAggregator,
+    private val userRepoAggregator: UserRepoAggregator,
 ){
 
     fun sendOtp(
@@ -28,7 +28,7 @@ class OtpVerificationService (
         }
         otpMaster.canSendOtp(user.id,)
         return otpMaster.sendOtp(
-            emailId = user.userEmail,
+            emailId = user.emailId,
             usertype = UserType.USER,
             userId = user.id,
             otpDeliveryChannel = otpDeliveryChannel,
@@ -38,7 +38,7 @@ class OtpVerificationService (
     fun verifyOtpForForgotPassword(
         otpDeliveryChannel: OtpDeliveryChannel,
         otpRequiredFor: OtpRequiredFor,
-        user: user,
+        user: User,
         otp: String,
     ) {
         val userId = user.id

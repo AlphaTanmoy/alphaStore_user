@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
 import jakarta.validation.constraints.Pattern
 import java.time.ZonedDateTime
-import java.util.ArrayList
 
 @Entity
 @Table(name = "user_table")
@@ -43,7 +42,10 @@ data class User (
     var country: String = "",
 
     @Column(nullable = false, unique = true)
-    var email: String = "",
+    var emailId: String = "",
+
+    @Column(nullable = false)
+    var address: String = "",
 
     @OneToOne(targetEntity = UserCart::class, fetch = FetchType.EAGER)
     @JoinTable(
@@ -51,15 +53,15 @@ data class User (
         joinColumns = [JoinColumn(name= "user_id")],
         inverseJoinColumns = [JoinColumn(name = "user_cart_id")],
     )
-    var userCart: UserCart,
+    var userCart: UserCart = UserCart(),
 
     @OneToOne(targetEntity = UserWishList::class, fetch = FetchType.EAGER)
     @JoinTable(
-        name = "user_cart",
+        name = "user_wish_list",
         joinColumns = [JoinColumn(name= "user_id")],
-        inverseJoinColumns = [JoinColumn(name = "user_wish_list_id")],
+        inverseJoinColumns = [JoinColumn(name = "user_wishlist_id")],
     )
-    var wishList: UserWishList,
+    var wishList: UserWishList = UserWishList(),
 
     var complainRaised: Boolean = false,
 

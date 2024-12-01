@@ -1,7 +1,6 @@
 package com.alphaStore.user.model
 
 import com.alphaStore.user.enums.DataStatus
-import java.time.Instant
 
 data class ProductResponse(
     var id: String,
@@ -10,7 +9,6 @@ data class ProductResponse(
     var numberOfProductsPresentAtStore: Int,
     var productMainCategory: String,
     var productSubCategory: String,
-    var createdDate: Instant,
-    var merchantId: String,
-    var status: DataStatus
+    var status: DataStatus,
+    var userId: String
 )

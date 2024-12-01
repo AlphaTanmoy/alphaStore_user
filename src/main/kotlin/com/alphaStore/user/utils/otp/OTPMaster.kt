@@ -26,10 +26,10 @@ class OTPMaster (
     private val emailMaster: EmailMaster
 ) {
     fun canSendOtp(
-        merchantId: String,
+        userId: String,
     ) {
         val otps = otpRepoAggregator.findLastOtpsSentToUser(
-            merchantId,
+            userId,
             NUMBER_OF_REPEATED_OTP_SEND_ATTEMPTS_BEFORE_HALTING
         )
         if (otps.isEmpty())
@@ -79,7 +79,7 @@ class OTPMaster (
     fun sendOtp(
         emailId: String = "",
         usertype: UserType,
-        merchantId: String,
+        userId: String,
         otpDeliveryChannel: OtpDeliveryChannel,
         otpRequiredFor: OtpRequiredFor,
     ): SendOtpResponse {
@@ -122,7 +122,7 @@ class OTPMaster (
                 otp = otp,
                 expiry = ZonedDateTime.now().plusMinutes(DELAY_IN_EACH_OTP_SENT_MINUTES.toLong()),
                 userType = UserType.USER,
-                merchantId = merchantId,
+                userId = userId,
                 otpRequiredFor = otpRequiredFor
             )
         )
@@ -146,7 +146,7 @@ class OTPMaster (
     fun verifyOtp(
         otpRequiredFor: OtpRequiredFor,
         otpDeliveryChannel: OtpDeliveryChannel,
-        merchantId: String,
+        userId: String,
         otp: String,
         tOtpSecret: String = "",
     ): OtpVerificationResult {
@@ -162,8 +162,8 @@ class OTPMaster (
 
         var verificationFrequencyCrossed = false
         val foundResults = ArrayList(
-            otpRepoAggregator.findByMerchantIdAndOtpPurposeAndOtpAndDataStatus(
-                merchantId, otpRequiredFor, otp
+            otpRepoAggregator.findByUserIdAndOtpPurposeAndOtpAndDataStatus(
+                userId, otpRequiredFor, otp
             )
         )
         var otpToDeActivate = Otp()

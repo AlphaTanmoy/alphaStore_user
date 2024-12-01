@@ -25,22 +25,22 @@ interface OtpRepo : JpaRepository<Otp, String> {
     fun findTop1ByOrderByCreatedDateDesc(): List<Otp>
     fun countByDataStatus(dataStatus: DataStatus = DataStatus.ACTIVE): Long
 
-    fun findByMerchantIdAndOtpRequiredForAndOtpAndDataStatus(
-        merchantId: String,
+    fun findByUserIdAndOtpRequiredForAndOtpAndDataStatus(
+        userId: String,
         otpRequiredFor: OtpRequiredFor,
         otp: String,
         dataStatus: DataStatus = DataStatus.ACTIVE
     ): List<Otp>
 
-    fun findByMerchantIdAndDataStatus(merchantId: String, dataStatus: DataStatus = DataStatus.ACTIVE): List<Otp>
+    fun findByUserIdAndDataStatus(userId: String, dataStatus: DataStatus = DataStatus.ACTIVE): List<Otp>
 
     @Query(
         value = "select * " +
                 "from otps " +
-                "where user_id = :merchantId " +
+                "where user_id = :userId " +
                 "order by created_date desc " +
                 "limit :limit",
         nativeQuery = true
     )
-    fun findLastOtpsSentToUser(merchantId: String, limit: Int): List<Otp>
+    fun findLastOtpsSentToUser(userId: String, limit: Int): List<Otp>
 }
