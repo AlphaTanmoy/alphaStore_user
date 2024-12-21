@@ -7,8 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface JWTBlackListRepo : JpaRepository<JWTBlackList, String> {
 
-    fun findByMerchantIdAndDataStatus(
-        merchantId: String,
+    fun findByUserIdAndDataStatus(
+        userId: String,
         dataStatus: DataStatus = DataStatus.ACTIVE
     ): List<JWTBlackList>
 

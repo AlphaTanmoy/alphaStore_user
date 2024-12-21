@@ -2,6 +2,7 @@ package com.alphaStore.user.utils
 
 import com.alphaStore.user.contract.aggregator.UserRepoAggregator
 import com.alphaStore.user.entity.User
+import com.alphaStore.user.enums.AccessRole
 import com.alphaStore.user.enums.UserType
 import com.alphaStore.user.error.BadRequestExceptionThrowable
 import com.alphaStore.user.error.UnAuthorizedException
@@ -43,6 +44,7 @@ class JwtUtilMaster (
     fun prepareJWT(
         id: String,
         userType: UserType,
+        accessRole: AccessRole,
         trackingId: String? = null
     ): TokenCreationResponse {
 
@@ -65,6 +67,7 @@ class JwtUtilMaster (
                 .claim("id",id)
                 .claim("type", userType.name)
                 .claim("trackingId", trackingId)
+                .claim("accessRole", accessRole)
                 .claim(
                     "createdAt",
                     encodingUtil.encode(
@@ -96,6 +99,7 @@ class JwtUtilMaster (
                 .claim("for", token)
                 .claim("type", userType.name)
                 .claim("trackingId", finalTrackingId)
+                .claim("accessRole", accessRole)
                 .claim(
                     "createdAt",
                     encodingUtil.encode(
@@ -204,6 +208,18 @@ class JwtUtilMaster (
         }
     }
 
+    fun getAccessRole(token: String): Optional<AccessRole> {
+        val bodyOptional = getBody(
+            token.replace(TOKEN_PREFIX, ""),
+        )
+        return if (bodyOptional.isPresent) {
+            val accessRole = bodyOptional.get()["accessRole"]
+            Optional.of(AccessRole.valueOf(accessRole.toString()))
+        } else {
+            Optional.empty()
+        }
+    }
+
     fun getTrackingId(token: String): String {
         val bodyOptional = getBody(
             token.replace(KeywordsAndConstants.TOKEN_PREFIX, ""),
@@ -307,6 +323,7 @@ class JwtUtilMaster (
 
             mapToReturn["id"] = claimsJWS.payload["id"].toString()
             mapToReturn["type"] = claimsJWS.payload["type"].toString()
+            mapToReturn["accessRole"] = claimsJWS.payload["access_role"].toString()
             return mapToReturn
         } catch (expiredJwtException: ExpiredJwtException) {
             val dataPartOfJwt = authToken.split(".")[1]

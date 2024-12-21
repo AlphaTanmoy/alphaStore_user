@@ -18,11 +18,11 @@ class JWTBlackListRepoAggregator(
         jwtBlackListRepo.saveAll(entities)
     }
 
-    fun findByMerchantIdAndDataStatus(
-        merchantId: String,
-        dataStatus: DataStatus,
-        forceMaster: Boolean
+    fun findByUserIdAndDataStatus(
+        userId: String,
+        dataStatus: DataStatus = DataStatus.ACTIVE,
+        forceMaster: Boolean = false
     ): List<JWTBlackList> {
-        return jwtBlackListRepo.findByMerchantIdAndDataStatus(merchantId, dataStatus)
+        return jwtBlackListRepo.findByUserIdAndDataStatus(userId, dataStatus)
     }
 }
