@@ -10,7 +10,6 @@ import com.alphaStore.user.entity.UserCart
 import com.alphaStore.user.entity.UserWishList
 import com.alphaStore.user.error.BadRequestException
 import com.alphaStore.user.error.UnAuthorizedException
-import com.alphaStore.user.feignClient.ProductClient
 import com.alphaStore.user.model.GetProfile
 import com.alphaStore.user.model.LoginWithEmailRequest
 import com.alphaStore.user.model.PaginationResponse
@@ -29,7 +28,6 @@ class UserService (
     private val encodingUtilContract: EncodingUtilContract,
     private val encryptionMaster: EncryptionMasterContract,
     private val dateUtilContract: DateUtil,
-    private val productClient: ProductClient,
     private val passwordEncoderMaster: PasswordEncoderMaster
 ) {
 
@@ -64,13 +62,13 @@ class UserService (
         return user[0]
     }
 
-    fun viewProduct(): PaginationResponse<ProductResponse> {
+    /*fun viewProduct(): PaginationResponse<ProductResponse> {
         try {
             return productClient.showAllProducts()
         } catch (e: FeignException) {
             throw RuntimeException("Error fetching products. ${e.message}")
         }
-    }
+    }*/
 
     fun createUser(user: User): User {
         val savedUserId = user.id

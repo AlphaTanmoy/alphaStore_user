@@ -8,7 +8,7 @@ import jakarta.persistence.Entity
 @Entity(name = "jwt_black_lists")
 data class JWTBlackList(
     @Column(nullable = false)
-    var merchantId: String = "",
+    var userId: String = "",
 ) : SuperEntityWithIdCreatedLastModifiedDataStatus()
 
 @JsonFilter("JwtBlackListFilter")
