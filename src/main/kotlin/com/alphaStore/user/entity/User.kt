@@ -1,6 +1,7 @@
 package com.alphaStore.user.entity
 
 import com.alphaStore.user.entity.superentity.SuperEntityWithIdCreatedLastModifiedDataStatus
+import com.alphaStore.user.enums.AccessRole
 import com.alphaStore.user.enums.UserType
 import com.fasterxml.jackson.annotation.JsonFilter
 import com.fasterxml.jackson.annotation.JsonIgnore
@@ -58,6 +59,10 @@ data class User (
     var feedbackGiven: Boolean = false,
 
     var feedbackId: String = "",
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    var accessRole: AccessRole = AccessRole.USER,
 
     ): SuperEntityWithIdCreatedLastModifiedDataStatus()
 

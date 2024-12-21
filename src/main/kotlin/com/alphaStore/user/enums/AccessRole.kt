@@ -5,10 +5,10 @@ enum class AccessRole (val nameDescriptor: String)  {
     USER("Users"),
     ADMIN("Admins"),
     DELIVERY_BOY("Delivery Boy"),
-    ADMIN_MERCHANT("Admins & Merchants"),
-    ADMIN_USER("Admins & Users"),
-    ADMIN_DELIVERY_BOY("Admins & Delivery Boy"),
-    ADMIN_MERCHANT_USER("Admins & Merchant & User"),
-    ADMIN_MERCHANT_DELIVERY_BOY("Admins & Merchant & Delivery Boy"),
-    ALL("All")
+//    ADMIN_MERCHANT("Admins & Merchants"),
+//    ADMIN_USER("Admins & Users"),
+//    ADMIN_DELIVERY_BOY("Admins & Delivery Boy"),
+//    ADMIN_MERCHANT_USER("Admins & Merchant & User"),
+//    ADMIN_MERCHANT_DELIVERY_BOY("Admins & Merchant & Delivery Boy"),
+//    ALL("All")
 }
